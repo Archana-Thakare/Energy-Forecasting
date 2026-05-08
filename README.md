@@ -10,7 +10,12 @@ The dataset includes: timestamps, appliance energy use (Wh), lights energy use (
 and humidity across 9 rooms, outdoor weather data (temperature, humidity, wind speed, visibility, dew
 point).
 
-### Hourly Energy Consumption Breakdown using SQL
+### Exploratory Data Analysis
+The dataset was analyzed using Pandas, DuckDB and Plotly  
+
+SQL queries with DuckDB were used to calculate average consumption by hour, average consumption by weekday, monthly trends.  
+
+#### Hourly Energy Consumption Breakdown using SQL
 
 | Time Window | Consumption (Units) | Category | Description |
 | :--- | :--- | :--- | :--- |
