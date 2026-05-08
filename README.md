@@ -19,5 +19,5 @@ point).
 | **11:00** | 133.13 | **Secondary Peak** | Mid-day activity or small commercial operations. |
 | **18:00** | 190.36 | **Primary Peak** | Evening surge (HVAC, cooking, and entertainment). |
 
-**Weekly Anomalies**: Monday represents the **highest usage day (111.45)**, showing a sharp increase compared to Tuesday (87.12). This suggests a weekly "catch-up" period for chores or specific operational start-up routines.
-**Seasonal Stability**: Monthly consumption is exceptionally **consistent**, maintaining a narrow range of 94–100 units. This indicates that energy draw is tied to year-round appliances or fixed processes rather than seasonal heating or cooling.
+**Weekly Anomalies**: Monday represents the **highest usage day (111.45)**, showing a sharp increase compared to Tuesday (87.12). This suggests a weekly "catch-up" period for chores or specific operational start-up routines.  
+**Seasonal Stability**: Monthly consumption is exceptionally **consistent**, maintaining a narrow range of 94–100 units. This indicates that energy draw is tied to year-round appliances or fixed processes rather than seasonal heating or cooling.  
