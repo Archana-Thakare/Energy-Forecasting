@@ -1,132 +1,94 @@
 import pandas as pd
 import numpy as np
 
-# =========================
+# ======================================
 # LOAD DATA
-# =========================
+# ======================================
 
 df = pd.read_csv("data/energydata_complete.csv")
 
-# Convert timestamp
 df["date"] = pd.to_datetime(df["date"])
 
-# Sort by time
 df = df.sort_values("date")
 
-# =========================
+# ======================================
+# TARGET (1 HOUR AHEAD)
+# ======================================
+
+# Predict 1 hour into the future
+df["target"] = df["Appliances"].shift(-6)
+
+# ======================================
 # TIME FEATURES
-# =========================
+# ======================================
 
-# Hour of day
 df["hour"] = df["date"].dt.hour
-
-# Day of week
 df["day_of_week"] = df["date"].dt.dayofweek
-
-# Month
 df["month"] = df["date"].dt.month
+df["is_weekend"] = (
+    df["day_of_week"].isin([5, 6]).astype(int)
+)
 
-# Weekend flag
-df["is_weekend"] = df["day_of_week"].isin([5, 6]).astype(int)
+# Cyclical encoding
+df["hour_sin"] = np.sin(
+    2 * np.pi * df["hour"] / 24
+)
 
-# =========================
+df["hour_cos"] = np.cos(
+    2 * np.pi * df["hour"] / 24
+)
+
+# ======================================
 # LAG FEATURES
-# =========================
+# ======================================
 
-# Dataset interval = 10 minutes
-# 1 hour lag = 6 rows
-# 24 hour lag = 144 rows
+df["lag_10min"] = df["Appliances"].shift(1)
+df["lag_30min"] = df["Appliances"].shift(3)
+df["lag_1hour"] = df["Appliances"].shift(6)
+df["lag_6hour"] = df["Appliances"].shift(36)
+df["lag_24hour"] = df["Appliances"].shift(144)
 
-df["lag_1_hour"] = df["Appliances"].shift(6)
-
-df["lag_24_hour"] = df["Appliances"].shift(144)
-
-# =========================
+# ======================================
 # ROLLING FEATURES
-# =========================
+# ======================================
 
-# 3-hour rolling mean
-df["rolling_mean_3h"] = (
+df["rolling_1hour"] = (
     df["Appliances"]
-    .rolling(window=18)
+    .rolling(window=6)
     .mean()
 )
 
-# 6-hour rolling mean
-df["rolling_mean_6h"] = (
+df["rolling_6hour"] = (
     df["Appliances"]
     .rolling(window=36)
     .mean()
 )
 
-# 24-hour rolling mean
-df["rolling_mean_24h"] = (
+df["rolling_24hour"] = (
     df["Appliances"]
     .rolling(window=144)
     .mean()
 )
 
-# =========================
-# HANDLE MISSING VALUES
-# =========================
+# ======================================
+# DROP MISSING ROWS
+# ======================================
 
-print("\nMissing values BEFORE cleaning:")
-print(df.isnull().sum())
+df = df.dropna()
 
-# Forward fill
-df = df.ffill()
+# ======================================
+# SAVE
+# ======================================
+# Remove extreme spikes
+upper_limit = df["target"].quantile(0.99)
 
-# Backward fill
-df = df.bfill()
-
-print("\nMissing values AFTER cleaning:")
-print(df.isnull().sum())
-
-# =========================
-# HANDLE OUTLIERS
-# =========================
-
-# Using IQR method
-
-Q1 = df["Appliances"].quantile(0.25)
-Q3 = df["Appliances"].quantile(0.75)
-
-IQR = Q3 - Q1
-
-lower_bound = Q1 - 1.5 * IQR
-upper_bound = Q3 + 1.5 * IQR
-
-# Cap outliers
-df["Appliances"] = np.clip(
-    df["Appliances"],
-    lower_bound,
-    upper_bound
-)
-
-print("\nOutlier bounds:")
-print("Lower:", lower_bound)
-print("Upper:", upper_bound)
-
-# =========================
-# FINAL CHECK
-# =========================
-
-print("\nFinal dataframe shape:")
-print(df.shape)
-
-print("\nFeature columns:")
-print(df.columns)
-
-print("\nPreview:")
-print(df.head())
-
-# =========================
-# SAVE FEATURED DATASET
-# =========================
+df = df[df["target"] <= upper_limit]
 
 df.to_csv(
     "data/energy_features.csv",
     index=False
 )
 
-print("\nFeature engineered dataset saved.")
+print(df.head())
+print(df.shape)
+print("Feature engineering complete.")
