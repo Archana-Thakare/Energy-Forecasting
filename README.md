@@ -52,10 +52,13 @@ Dashboarding -	Streamlit, Visualization - Plotly, Model Serialization - joblib, 
 
 
 **Model Comparison**  
-Linear Regression -	Weak baseline performance  
-Random Forest -	Improved non-linear prediction  
-XGBoost	Best overall accuracy
 
+Linear Regression -	Weak baseline performance  
+MAE: 35.41614364956966, RMSE: 66.78964633340513, R2: 0.22049432925090118     
+Random Forest -	Improved non-linear prediction    
+MAE: 35.95548436456531, RMSE: 65.11420778064401, R2: 0.25911208055494683  
+XGBoost	Best overall accuracy  
+MAE: 35.01264456031249, RMSE: 64.64315640927137, R2: 0.26979281897184126  
 ### What I Learned ###
 1. Time-Series Feature Engineering Is Critical - Lag variables and rolling averages significantly improved forecasting accuracy.
 
