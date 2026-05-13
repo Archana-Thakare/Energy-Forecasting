@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+import joblib
 
 from sklearn.linear_model import LinearRegression
 from sklearn.ensemble import RandomForestRegressor
@@ -10,6 +11,10 @@ from sklearn.metrics import (
     mean_squared_error,
     r2_score
 )
+
+import mlflow
+import mlflow.sklearn
+import mlflow.xgboost
 
 # ======================================
 # LOAD DATA
@@ -51,7 +56,6 @@ selected_features = [
 ]
 
 X = df[selected_features]
-
 y = df[target]
 
 # ======================================
@@ -73,7 +77,7 @@ print("Test size:", X_test.shape)
 # EVALUATION FUNCTION
 # ======================================
 
-def evaluate(model, X_test, y_test):
+def evaluate_model(model, X_test, y_test):
 
     predictions = model.predict(X_test)
 
@@ -87,55 +91,95 @@ def evaluate(model, X_test, y_test):
 
     return mae, rmse, r2
 
+
+# =====================================
+# MLFLOW EXPERIMENT
+# =====================================
+
+mlflow.set_experiment("Energy Forecasting")
+
+
 # ======================================
 # LINEAR REGRESSION
 # ======================================
 
-lr = LinearRegression()
+with mlflow.start_run(run_name="Linear Regression"):
 
-lr.fit(X_train, y_train)
+    lr_model = LinearRegression()
 
-mae, rmse, r2 = evaluate(
-    lr,
-    X_test,
-    y_test
-)
+    lr_model.fit(X_train, y_train)
 
-print("\nLinear Regression")
-print("MAE:", mae)
-print("RMSE:", rmse)
-print("R2:", r2)
+    mae, rmse, r2 = evaluate_model(
+        lr_model,
+        X_test,
+        y_test
+    )
+
+    # Log parameters
+    mlflow.log_param("model_type", "LinearRegression")
+
+    # Log metrics
+    mlflow.log_metric("MAE", mae)
+    mlflow.log_metric("RMSE", rmse)
+    mlflow.log_metric("R2", r2)
+
+    # Log model
+    mlflow.sklearn.log_model(
+        lr_model,
+        "linear_regression_model"
+    )
+
+    print("\nLinear Regression")
+    print("MAE:", mae)
+    print("RMSE:", rmse)
+    print("R2:", r2)
 
 # ======================================
 # RANDOM FOREST
 # ======================================
 
-rf = RandomForestRegressor(
+with mlflow.start_run(run_name="Random Forest"):
+    rf = RandomForestRegressor(
     n_estimators=100,
     max_depth=6,
     min_samples_leaf=5,
     random_state=42,
     n_jobs=-1
-)
+    )
 
-rf.fit(X_train, y_train)
+    rf.fit(X_train, y_train)
 
-mae, rmse, r2 = evaluate(
+    mae, rmse, r2 = evaluate_model(
     rf,
     X_test,
     y_test
-)
+    )
+    # Log parameters
+    mlflow.log_param("model_type", "RandomForest")
+    mlflow.log_param("n_estimators", 100)
+    mlflow.log_param("max_depth", 6)
 
-print("\nRandom Forest")
-print("MAE:", mae)
-print("RMSE:", rmse)
-print("R2:", r2)
+    # Log metrics
+    mlflow.log_metric("MAE", mae)
+    mlflow.log_metric("RMSE", rmse)
+    mlflow.log_metric("R2", r2)
+
+    # Log model
+    mlflow.sklearn.log_model(
+        rf,
+        "random_forest_model"
+    )
+
+    print("\nRandom Forest")
+    print("MAE:", mae)
+    print("RMSE:", rmse)
+    print("R2:", r2)
 
 # ======================================
 # XGBOOST
 # ======================================
-
-xgb = XGBRegressor(
+with mlflow.start_run(run_name="XGBoost"):
+    xgb = XGBRegressor(
     n_estimators=100,
     learning_rate=0.05,
     max_depth=4,
@@ -145,17 +189,35 @@ xgb = XGBRegressor(
     reg_lambda=1,
     objective="reg:squarederror",
     random_state=42
-)
+    )
 
-xgb.fit(X_train, y_train)
+    xgb.fit(X_train, y_train)
 
-mae, rmse, r2 = evaluate(
-    xgb,
-    X_test,
-    y_test
-)
+    mae, rmse, r2 = evaluate_model(
+        xgb,
+        X_test,
+        y_test
+    )
 
-print("\nXGBoost")
-print("MAE:", mae)
-print("RMSE:", rmse)
-print("R2:", r2)
+    joblib.dump(xgb, "models/xgboost_model.pkl")
+    
+    # Log parameters
+    mlflow.log_param("model_type", "XGBoost")
+    mlflow.log_param("n_estimators", 100)
+    mlflow.log_param("learning_rate", 0.05)
+    mlflow.log_param("max_depth", 4)
+
+    # Log metrics
+    mlflow.log_metric("MAE", mae)
+    mlflow.log_metric("RMSE", rmse)
+    mlflow.log_metric("R2", r2)
+
+    # Log model
+    mlflow.xgboost.log_model(
+        xgb,
+        "xgboost_model"
+    )
+    print("\nXGBoost")
+    print("MAE:", mae)
+    print("RMSE:", rmse)
+    print("R2:", r2)

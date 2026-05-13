@@ -45,7 +45,24 @@ Outliers capped using IQR-based clipping.
 
 ### Tech Stack ###
 Programming Language - Python, IDE - Visual Studio Code, Data Processing -	Pandas, SQL Analytics - DuckDB, Machine Learning - scikit-learn, Gradient Boosting - XGBoost, Experiment Tracking -	MLflow, 
-Dashboarding -	Streamlit, Visualization - Plotly, Model Serialization - joblib, Version Control - GitHub.  
+Dashboarding -	Streamlit, Visualization - Plotly, Model Serialization - joblib, Version Control - GitHub. 
+
+
+### Dashboard Preview ###
+
+#### Main Dashboard
+
+![predicted_energy](assets/screenshots/predicted_energy.png)
+
+#### Feature Importance
+
+![Feature Importance](assets/screenshots/Feature_importance.png)
+
+## Filtered Data Preview
+
+![Filtered Data Preview](assets/screenshots/filtered_data_preview)
+
+
 
 ### Results & KPIs ###
 **Evaluation Metrics** :RMSE, MAE, R².   

@@ -34,7 +34,30 @@ model = joblib.load("models/xgboost_model.pkl")
 
 target = "Appliances"
 
-X = df.drop(columns=[target, "date"])
+selected_features = [
+
+    # Time features
+    "hour",
+    "day_of_week",
+    "is_weekend",
+    "hour_sin",
+    "hour_cos",
+
+    # Lag features
+    "lag_10min",
+    "lag_30min",
+    "lag_1hour",
+    "lag_6hour",
+    "lag_24hour",
+
+    # Rolling features
+    "rolling_1hour",
+    "rolling_6hour",
+    "rolling_24hour"
+]
+
+X = df[selected_features]
+
 
 # ======================================
 # PREDICTIONS
