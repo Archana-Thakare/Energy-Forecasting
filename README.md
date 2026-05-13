@@ -60,7 +60,7 @@ Dashboarding -	Streamlit, Visualization - Plotly, Model Serialization - joblib, 
 
 ## Filtered Data Preview
 
-![Filtered Data Preview](assets/screenshots/filtered_data_preview)
+![Filtered Data Preview](assets/screenshots/filtered_data_preview.png)
 
 
 
