@@ -102,21 +102,21 @@ Energy-Forecasting/
 ├── app.py
 ├── requirements.txt
 ├── data/
-│   └── energy_features.csv
-    └── energydata_complete.csv
+│   ├── energy_features.csv
+│   └── energydata_complete.csv
 ├── models/
 │   └── xgboost_model.pkl
 ├── src/
-    └── data_inspection.py
-    └── duckdb_analysis.py
-    └── feature_engineering.py
-    └── plot_timeseries.py
-    └── train_models.py
+│    ├── data_inspection.py
+│    ├── duckdb_analysis.py
+│    ├── feature_engineering.py
+│    ├── plot_timeseries.py
+│    └── train_models.py
 ├── asset/
-    └── screenshots/
-        └── Feature_importance.png
-        └── filtered_data_preview.png
-        └── predicted_energy.png
+│    └── screenshots/
+│        ├── Feature_importance.png
+│        ├── filtered_data_preview.png
+│        └── predicted_energy.png
 └── README.md
 ```
 
