@@ -94,6 +94,98 @@ Lag features had extremely high predictive power. Daily seasonality was stronger
 ### Data Improvements ###
 Add external weather APIs, Real-time prediction updates, MLOps Enhancements, Automated retraining pipeline, Docker deployment, Cloud deployment using AWS/Azure/GCP, Add streaming ingestion pipelines
 
+# Project Structure
+
+```text
+Energy-Forecasting/
+│
+├── app.py
+├── requirements.txt
+├── data/
+│   └── energy_features.csv
+    └── energydata_complete.csv
+├── models/
+│   └── xgboost_model.pkl
+├── src/
+    └── data_inspection.py
+    └── duckdb_analysis.py
+    └── feature_engineering.py
+    └── plot_timeseries.py
+    └── train_models.py
+├── asset/
+    └── screenshots/
+        └── Feature_importance.png
+        └── filtered_data_preview.png
+        └── predicted_energy.png
+└── README.md
+```
+
+---
+
+# How to Run
+
+## Step 1 — Clone the Repository
+
+```bash
+git clone <https://github.com/Archana-Thakare/Energy-Forecasting.git>
+cd Energy-Forecasting
+```
+
+---
+
+## Step 2 — Download the Dataset
+
+Download:
+
+* `energydata_complete.csv`
+
+From:
+https://archive.ics.uci.edu/dataset/374/appliances+energy+prediction
+
+Place it in:
+
+```text
+data/
+```
+
+---
+
+## Step 3 — Create a Virtual Environment
+
+### Windows
+
+python -m venv venv
+
+Activate it:
+
+venv\Scripts\activate
+
+
+### macOS/Linux
+
+python3 -m venv venv
+
+source venv/bin/activate
+
+## Step 4 — Install Dependencies
+
+pip install -r requirements.txt
+
+## Step 5 — Verify Required Files Exist
+
+The following files should already be in the repository:
+
+data/energy_features.csv
+
+models/xgboost_model.pkl
+
+## Step 6 —Launch the Dashboard
+streamlit run app.py
+
+## Step 7 — Open the Dashboard
+Streamlit will display something similar to:
+Local URL: http://localhost:8501 in browser
+
 ### Conclusion ###
 This project successfully built an end-to-end machine learning pipeline for energy consumption forecasting, covering data ingestion, feature engineering, exploratory analysis, predictive modeling, experiment tracking, interactive dashboard deployment.  
 
