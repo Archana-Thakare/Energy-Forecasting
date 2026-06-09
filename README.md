@@ -27,6 +27,12 @@ SQL queries with DuckDB were used to calculate average consumption by hour, aver
 
 **Seasonal Stability**: Monthly consumption is exceptionally **consistent**, maintaining a narrow range of 94–100 units. This indicates that energy draw is tied to year-round appliances or fixed processes rather than seasonal heating or cooling.  
 
+**Multicolinearity**: High multicollinearity was detected within the dataset. Specifically, temperature readings across different rooms are highly correlated with each other, and humidity readings across different rooms exhibit the same strong correlation.
+
+### Corelation Matrix
+
+![Corelation Matrix](assets/screenshots/corelation_matrix.png)
+
 ### Feature Engineering ###
 
 Several time-series forecasting features were created Eg. hour of day, day of week, month, weekend indicator, Lag Features  
@@ -71,11 +77,11 @@ Dashboarding -	Streamlit, Visualization - Plotly, Model Serialization - joblib, 
 **Model Comparison**  
 
 Linear Regression -	Weak baseline performance  
-MAE: 35.41614364956966, RMSE: 66.78964633340513, R2: 0.22049432925090118     
+MAE: 21.9744977322642, RMSE: 46.16976883807412, R2:0.6274124953556317     
 Random Forest -	Improved non-linear prediction    
-MAE: 35.95548436456531, RMSE: 65.11420778064401, R2: 0.25911208055494683  
+MAE: 20.017655168634736, RMSE: 44.84587994539427, R2: 0.6484735683538838  
 XGBoost	Best overall accuracy  
-MAE: 35.01264456031249, RMSE: 64.64315640927137, R2: 0.26979281897184126  
+MAE: 20.038496017456055, RMSE: 43.46041436971696, R2: 0.6698580980300903  
 ### What I Learned ###
 1. Time-Series Feature Engineering Is Critical - Lag variables and rolling averages significantly improved forecasting accuracy.
 

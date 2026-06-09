@@ -53,7 +53,37 @@ selected_features = [
     # Rolling features
     "rolling_1hour",
     "rolling_6hour",
-    "rolling_24hour"
+    "rolling_24hour",
+
+    # Temperature & Humidity features
+    "T1",
+    "RH_1",
+    #"T2",
+    #"RH_2",
+    #"T3",
+    "RH_3",
+    #"T4",
+    #"RH_4",
+    #"T5",
+    #"RH_5",
+    #"T6",
+    #"RH_6",
+    #"T7",
+    #"RH_7",
+    #"T8",
+    #"RH_8",
+    #"T9",
+    #"RH_9"
+    #"T_out",
+    #"Press_mm_hg",
+    "RH_out",
+    #"Windspeed",
+    "Visibility",
+    "Tdewpoint",
+    "rv1"
+    #"rv2"
+
+
 ]
 
 X = df[selected_features]
