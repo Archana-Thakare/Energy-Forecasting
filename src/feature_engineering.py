@@ -16,8 +16,8 @@ df = df.sort_values("date")
 # ======================================
 
 # Predict 1 hour into the future
-df["target"] = df["Appliances"]
-#df["target"] = df["Appliances"].shift(-6)
+#df["target"] = df["Appliances"]
+df["target"] = df["Appliances"].shift(-6)
 
 # ======================================
 # TIME FEATURES

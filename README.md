@@ -35,14 +35,34 @@ SQL queries with DuckDB were used to calculate average consumption by hour, aver
 
 ### Feature Engineering ###
 
-Several time-series forecasting features were created Eg. hour of day, day of week, month, weekend indicator, Lag Features  
+Several time-series forecasting features were created Eg. hour of day, day of week, month, weekend indicator, Lag Features  to predict enery requiement for 1 hour into the future
 Historical consumption patterns were captured using 1-hour lag, 24-hour lag  
 Rolling averages were added to smooth short-term fluctuations: 3-hour rolling mean, 6-hour rolling mean
 24-hour rolling mean.
+# Time features
+    "hour",
+    "day_of_week",
+    "is_weekend",
+    "hour_sin",
+    "hour_cos",
+
+    # Lag features
+    "lag_10min",
+    "lag_30min",
+    "lag_1hour",
+    "lag_6hour",
+    "lag_24hour",
+
+    # Rolling features
+    "rolling_1hour",
+    "rolling_6hour",
+    "rolling_24hour"
 
 **Data Cleaning**  
 Missing values handled using forward/backward fill.  
 Outliers capped using IQR-based clipping.  
+Since data is captured after every 10 minutes. Target feature is shifted by 6(6*10=60)
+
 
 ### Machine Learning Models ###
 1. Linear Regression - Simple baseline model.  
@@ -57,6 +77,7 @@ Dashboarding -	Streamlit, Visualization - Plotly, Model Serialization - joblib, 
 ### Dashboard Preview ###
 
 #### Main Dashboard
+Energy prediction for 1 hour in future.
 
 ![predicted_energy](assets/screenshots/predicted_energy.png)
 
@@ -75,13 +96,44 @@ Dashboarding -	Streamlit, Visualization - Plotly, Model Serialization - joblib, 
 
 
 **Model Comparison**  
+### Enery requiement prediction for 1 hour into the future with only time features
+Linear Regression-	Weak baseline performance
 
+MAE: 35.41614364956966, RMSE: 66.78964633340513, R2: 0.22049432925090118
+
+Random Forest-	Improved non-linear prediction 
+
+MAE: 35.95548436456531, RMSE: 65.11420778064401, R2: 0.25911208055494683
+
+XGBoost- Best overall accuracy
+
+MAE: 35.01264456031249, RMSE: 64.64315640927137, R2: 0.26979281897184126
+### Enery requiement prediction for 1 hour into the future after including humidity, temperature, visibilty, windspeed, etc
+Linear Regression - MAE: 34.985538023777444, RMSE: 66.93223430489994, R2: 0.21716247221893614
+
+Random Forest - MAE: 43.62628817858918, RMSE: 73.03464921015613, R2: 0.06790777207390974
+
+XGBoost - MAE: 39.85165175998334, RMSE: 68.86215612899443, R2: 0.17136700031776952
+
+### Enery requiement prediction for same time with only time features
+Linear Regression - MAE: 21.632859341055894, RMSE: 45.98204240749208, R2: 0.6304362196130906
+
+Random Forest - MAE: 20.007561292215883, RMSE: 44.78760158403603, R2: 0.6493866097813966
+
+XGBoost - MAE: 19.803590774536133, RMSE: 43.19859125171575, R2: 0.6738239526748657
+### Enery requiement prediction for same time after including humidity, temperature, visibilty, windspeed, etc
 Linear Regression -	Weak baseline performance  
+
 MAE: 21.9744977322642, RMSE: 46.16976883807412, R2:0.6274124953556317     
+
 Random Forest -	Improved non-linear prediction    
+
 MAE: 20.017655168634736, RMSE: 44.84587994539427, R2: 0.6484735683538838  
-XGBoost	Best overall accuracy  
+
+XGBoost - Best overall accuracy  
+
 MAE: 20.038496017456055, RMSE: 43.46041436971696, R2: 0.6698580980300903  
+
 ### What I Learned ###
 1. Time-Series Feature Engineering Is Critical - Lag variables and rolling averages significantly improved forecasting accuracy.
 
@@ -89,10 +141,12 @@ MAE: 20.038496017456055, RMSE: 43.46041436971696, R2: 0.6698580980300903
 
 3. Tree-Based Models Handle Real-World Data Better - Random Forest and XGBoost handled noise, non-linearity, outliers more effectively than linear models.
 
-4. MLflow Simplifies Experiment Tracking : Made it easy to compare experiments, store parameters
+4. Including features like humidity and temperature may help to improve prediction of current energy requirement but it does not help to predict 1 hour future energy requirement. 
+
+5. MLflow Simplifies Experiment Tracking : Made it easy to compare experiments, store parameters
 track metrics, save trained models
 
-5. Streamlit Enables Rapid Deployment - Allowed the project to be converted into an interactive dashboard quickly with minimal frontend code.
+6. Streamlit Enables Rapid Deployment - Allowed the project to be converted into an interactive dashboard quickly with minimal frontend code.
 
 ### What Surprised Me ###
 Lag features had extremely high predictive power. Daily seasonality was stronger than monthly seasonality. XGBoost handled noisy consumption spikes surprisingly well. Even relatively simple engineered features produced strong forecasting results.  
@@ -196,3 +250,5 @@ Local URL: http://localhost:8501 in browser
 This project successfully built an end-to-end machine learning pipeline for energy consumption forecasting, covering data ingestion, feature engineering, exploratory analysis, predictive modeling, experiment tracking, interactive dashboard deployment.  
 
 Among all tested models, XGBoost delivered the best forecasting performance and demonstrated the effectiveness of feature-engineered machine learning approaches for energy prediction tasks.
+
+Individual household behavior is highly chaotic (e.g., someone randomly turning on a washing machine or an oven completely spikes the data). Hence, R2 = 0.27 and model explains roughly 27% of the variance in 1-hour future energy demand.

@@ -56,12 +56,12 @@ selected_features = [
     "rolling_24hour",
 
     # Temperature & Humidity features
-    "T1",
-    "RH_1",
+    #"T1",
+    #"RH_1",
     #"T2",
     #"RH_2",
     #"T3",
-    "RH_3",
+    #"RH_3",
     #"T4",
     #"RH_4",
     #"T5",
@@ -76,11 +76,11 @@ selected_features = [
     #"RH_9"
     #"T_out",
     #"Press_mm_hg",
-    "RH_out",
+    #"RH_out",
     #"Windspeed",
-    "Visibility",
-    "Tdewpoint",
-    "rv1"
+    #"Visibility",
+    #"Tdewpoint",
+    #"rv1"
     #"rv2"
 
 
